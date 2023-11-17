@@ -65,13 +65,9 @@ public class Player {
 
     public void removeDuplicatesAndInvalids()
     {
-        for (int i = 0; i < getCardCombinations().size() - 1; i++)
-            for (int j = i + 1; j < getCardCombinations().size(); j++)
-                if (getCardCombinations().get(i).equals(getCardCombinations().get(j)))
-                {
-                    removeCardCombination(getCardCombinations().get(j));
-                    j--;
-                }
+        cardCombinations.removeIf(CardCombination::invalid);
+        Set<CardCombination> filterSet = new HashSet<>(cardCombinations);
+        cardCombinations = new ArrayList<>(filterSet);
     }
 
     public UUID getId() {

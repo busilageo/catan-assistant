@@ -162,8 +162,7 @@ public class CardCombination {
                 brick == that.brick &&
                 wool == that.wool &&
                 grain == that.grain &&
-                ore == that.ore) ||
-                this.invalid();
+                ore == that.ore);
     }
 
     @Override

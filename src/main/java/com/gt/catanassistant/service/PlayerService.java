@@ -53,7 +53,6 @@ public class PlayerService
             List<CardCombination> cardCombinations = player.getCardCombinations();
             for (CardCombination cardCombination : cardCombinations)
                 cardCombination.add(cardCombinationToAdd);
-            updatePlayerById(id, player);
 
         } else if (action.contains("discarded")) {
             String name = action.split("discarded")[0].trim();
@@ -64,7 +63,6 @@ public class PlayerService
             for (CardCombination cardCombination : cardCombinations)
                 cardCombination.subtract(cardCombinationToAdd);
             player.removeDuplicatesAndInvalids();
-            updatePlayerById(id, player);
 
         } else if (action.contains("stole card from"))
         {
@@ -99,9 +97,8 @@ public class PlayerService
                 combination.add(stringToCardCombination(player1Trade));
                 newCardCombinations2.add(combination);
             }
-
-            updatePlayerById(player1.getId(), new Player(player1.getId(), player1.getName(), newCardCombinations1));
-            updatePlayerById(player2.getId(), new Player(player2.getId(), player2.getName(), newCardCombinations2));
+            player1.removeDuplicatesAndInvalids();
+            player2.removeDuplicatesAndInvalids();
 
         } else if (action.contains("gave bank"))
         {
@@ -117,8 +114,7 @@ public class PlayerService
                 cardCombination.add(stringToCardCombination(took));
                 newCardCombinations.add(cardCombination);
             }
-
-            updatePlayerById(player.getId(), new Player(player.getId(), player.getName(), newCardCombinations));
+            player.removeDuplicatesAndInvalids();
 
         } else if (action.contains("built"))
         {
@@ -152,24 +148,21 @@ public class PlayerService
                 newCardCombinations.add(cardCombination);
             }
 
-            updatePlayerById(player.getId(), new Player(player.getId(), player.getName(), newCardCombinations));
+            player.removeDuplicatesAndInvalids();
 
         } else if (action.contains("bought development card"))
         {
             String name = action.split("bought")[0].trim();
             Player player = getPlayerById(getPlayerIdByName(name));
-            List<CardCombination> newCardCombinations = new ArrayList<>();
 
             for (CardCombination cardCombination : player.getCardCombinations())
             {
                 cardCombination.decrementResource("wool");
                 cardCombination.decrementResource("grain");
                 cardCombination.decrementResource("ore");
-
-                newCardCombinations.add(cardCombination);
             }
 
-            updatePlayerById(player.getId(), new Player(player.getId(), player.getName(), newCardCombinations));
+            player.removeDuplicatesAndInvalids();
 
         }
         // Year of plenty
@@ -187,8 +180,6 @@ public class PlayerService
                 newCardCombinations.add(cardCombination);
             }
 
-            updatePlayerById(player.getId(), new Player(player.getId(), player.getName(), newCardCombinations));
-
         } else if (action.contains("stole") && !action.contains("card"))
         {
             String name = action.split("stole")[0].trim();
@@ -205,7 +196,13 @@ public class PlayerService
                 newCardCombinations.add(cardCombination);
             }
 
-            updatePlayerById(player.getId(), new Player(player.getId(), player.getName(), newCardCombinations));
+            for (Player playerFromList : getAllPlayers())
+                if (!playerFromList.equals(player))
+                {
+                    for (CardCombination cardCombination : playerFromList.getCardCombinations())
+                        while (cardCombination.getResource(resource) > 0)
+                            cardCombination.decrementResource(resource);
+                }
 
         } else if (action.contains("trophy"))
         {
