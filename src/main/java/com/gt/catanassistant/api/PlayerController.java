@@ -34,7 +34,7 @@ public class PlayerController
     @GetMapping(path = "{id}")
     public Player getPlayerById(@PathVariable("id") UUID id)
     {
-        return playerService.getPlayerById(id).orElse(null);
+        return playerService.getPlayerById(id);
     }
 
     @DeleteMapping(path = "{id}")
@@ -49,10 +49,11 @@ public class PlayerController
         playerService.updatePlayerById(id, player);
     }
 
-    //TODO
+    //TODO Solve discarding negative resources
+    //TODO Solve robbing; p2 getting all 0 res
     @PostMapping(path = "action")
     public void resolveAction(@RequestBody String action)
     {
-        //playerService.resolveAction(action);
+        playerService.resolveAction(action);
     }
 }

@@ -15,7 +15,8 @@ public interface PlayerDao
         return insertPlayer(id, player);
     }
     List<Player> selectAllPlayers();
-    Optional<Player> selectPlayerById(UUID id);
+    Player selectPlayerById(UUID id);
+    UUID selectPlayerIdByName(String name);
     boolean deletePlayerById(UUID id);
     boolean updatePlayerById(UUID id, Player player);
 }

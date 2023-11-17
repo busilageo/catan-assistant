@@ -9,5 +9,4 @@ class CatanAssistantApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

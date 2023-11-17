@@ -3,18 +3,16 @@ package com.gt.catanassistant.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gt.catanassistant.dao.PlayerDao;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class Player {
     private final UUID id;
     private final String name;
-    private Set<CardCombination> cardCombinations;
+    private List<CardCombination> cardCombinations = new ArrayList<>();
 
     public Player(@JsonProperty("id") UUID id,
                   @JsonProperty("name") String name,
-                  @JsonProperty("cardCombinations") Set<CardCombination> cardCombinations) {
+                  @JsonProperty("cardCombinations") List<CardCombination> cardCombinations) {
         this.id = id;
         this.name = name;
         this.cardCombinations = cardCombinations;
@@ -26,18 +24,61 @@ public class Player {
         this.cardCombinations = player.getCardCombinations();
     }
 
+    public Player(String name, List<CardCombination> cardCombinations)
+    {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.cardCombinations = cardCombinations;
+    }
+
     public String getName() {
         return name;
     }
 
-    public Set<CardCombination> getCardCombinations() {
+    public List<CardCombination> getCardCombinations() {
         return cardCombinations;
+    }
+
+    public void removeCombination(CardCombination cardCombination)
+    {
+        cardCombinations.remove(cardCombination);
+    }
+
+    public void addCardCombination(CardCombination cardCombination)
+    {
+        cardCombinations.add(cardCombination);
+    }
+
+    public void removeCardCombination(int index)
+    {
+        cardCombinations.remove(index);
+    }
+
+    public void removeCardCombination(CardCombination cardCombination)
+    {
+        cardCombinations.remove(cardCombination);
+    }
+
+    public void setCardCombinations(List<CardCombination> cardCombinations) {
+        this.cardCombinations = cardCombinations;
+    }
+
+    public void removeDuplicatesAndInvalids()
+    {
+        for (int i = 0; i < getCardCombinations().size() - 1; i++)
+            for (int j = i + 1; j < getCardCombinations().size(); j++)
+                if (getCardCombinations().get(i).equals(getCardCombinations().get(j)))
+                {
+                    removeCardCombination(getCardCombinations().get(j));
+                    j--;
+                }
     }
 
     public UUID getId() {
         return id;
     }
-/*
+
+    /*
 
     public boolean canMakeRoad()
     {

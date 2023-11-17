@@ -25,32 +25,42 @@ public class FakePlayerDataAccessService implements PlayerDao
     }
 
     @Override
-    public Optional<Player> selectPlayerById(UUID id) {
-        return DB.stream()
+    public Player selectPlayerById(UUID id) {
+        Optional<Player> playerMaybe = DB.stream()
                 .filter(player -> player.getId().equals(id))
                 .findFirst();
+        return playerMaybe.orElse(null);
+    }
+
+    @Override
+    public UUID selectPlayerIdByName(String name)
+    {
+        Optional<Player> playerMaybe = DB.stream()
+                .filter(player -> player.getName().equals(name))
+                .findFirst();
+        return playerMaybe.map(Player::getId).orElse(null);
     }
 
     @Override
     public boolean deletePlayerById(UUID id) {
-        Optional<Player> playerMaybe = selectPlayerById(id);
-        if (playerMaybe.isEmpty())
+        Player playerMaybe = selectPlayerById(id);
+        if (playerMaybe == null)
             return false;
-        DB.remove(playerMaybe.get());
+        DB.remove(playerMaybe);
         return true;
     }
 
     @Override
     public boolean updatePlayerById(UUID id, Player player) {
-        return selectPlayerById(id)
-                .map(p -> {
-                    int index = DB.indexOf(p);
-                    if (index >= 0)
-                    {
-                        DB.set(index, player);
-                        return true;
-                    }
-                    return false;
-                }).orElse(false);
+        Player p = selectPlayerById(id);
+        int index = DB.indexOf(p);
+
+        if (index >= 0)
+        {
+            DB.set(index, new Player(id, player));
+            return true;
+        }
+
+        return false;
     }
 }
