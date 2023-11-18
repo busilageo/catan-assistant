@@ -3,6 +3,7 @@ package com.gt.catanassistant.api;
 import com.gt.catanassistant.model.Player;
 import com.gt.catanassistant.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,9 +27,10 @@ public class PlayerController
     }
 
     @GetMapping
-    public List<Player> getAllPlayers()
+    public String getAllPlayers(Model model)
     {
-        return playerService.getAllPlayers();
+        model.addAttribute("players", playerService.getAllPlayers());
+        return "game";
     }
 
     @GetMapping(path = "{id}")

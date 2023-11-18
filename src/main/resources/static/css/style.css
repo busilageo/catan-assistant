@@ -1,0 +1,131 @@
+body{
+    background-color: #222831;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+}
+h1#title{
+    color: #EEEEEE;
+    text-align: center;
+    font-size: 50px;
+    font-family: Pacifico;
+    font-weight: 100;
+    text-decoration: underline 3px;
+}
+input#linkBox{
+    border-top: 2px solid #144272;
+    border-left: 2px solid #144272;
+    border-bottom: 2px solid #144272;
+    border-right: none;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 8px;
+    outline: none;
+    font-size: 16px;
+
+    text-align: center;
+    font-family: Roboto;
+    font-size: 18px;
+    color: #EEEEEE;
+
+    background-color: #00ADB5;
+    width: 240px;
+}
+input#linkBox::placeholder{
+    color: #F5F5F5;
+    opacity: 50%;
+}
+input#linkBoxNF::placeholder{
+    color: #F5F5F5;
+    opacity: 50%;
+}
+.inputBox{
+    display: flex;
+    justify-content: center;
+}
+.inputBoxNF{
+    display: flex;
+    justify-content: center;
+    animation: evaporate 1s linear forwards;
+    -webkit-animation: evaporate 1s linear forwards;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+}
+.goButton {
+    border-top: 2px solid #144272;
+    border-right: 2px solid #144272;
+    border-bottom: 2px solid #144272;
+    border-left: none;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 8px;
+    outline: none;
+    font-size: 24px;
+    font-weight: 700;
+    color: #EEEEEE;
+    box-shadow: none;
+    width: 60px;
+    background-color: #393E46;
+    overflow: hidden;
+    transition: evaporate 1s ease;
+    -webkit-transition: evaporate 1s ease;
+    -moz-transition: evaporate 1s ease;
+    -ms-transition: evaporate 1s ease;
+    -o-transition: evaporate 1s ease;
+}
+span{
+    display: inline-block;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+span:hover{
+    transform: scale(1.05);
+    color: #EEEEEE;
+    text-shadow: 0 0 3px #EEEEEE;
+}
+
+@keyframes evaporate{
+    from {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+    to {
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+    }
+}
+.animation {
+    animation: evaporate 1s linear forwards;
+    -webkit-animation: evaporate 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+}
+
+#linkBoxNF{
+    border-top: 2px solid #144272;
+    border-left: 2px solid #144272;
+    border-bottom: 2px solid #144272;
+    border-right: none;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    padding: 8px;
+    outline: none;
+    font-size: 16px;
+
+    text-align: center;
+    font-family: Roboto;
+    font-size: 18px;
+    color: #EEEEEE;
+
+    background-color: #00ADB5;
+    width: 240px;
+
+    animation: evaporate 1s linear forwards;
+    -webkit-animation: evaporate 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+
+
+}
+#linkBtnNF{
+    animation: evaporate 1s linear forwards;
+    -webkit-animation: evaporate 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+}

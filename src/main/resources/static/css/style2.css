@@ -1,0 +1,98 @@
+.player {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 0;
+    margin-bottom: 20px;
+}
+
+.player-info{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+.player-name{
+    color: white;
+
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.resource-table-container {
+    flex: 1;
+}
+
+.resource-table {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.resource-table th, .resource-table td {
+    border-top: 5px solid #222831;
+    border-bottom: 5px solid #222831;
+    padding: 8px;
+    text-align: center;
+}
+
+.resource-table tr {
+    background-color: #00ADB5;
+    background-color: rgba(0, 173, 181, .5);
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.resource-table td:nth-child(1) {
+    background-color: #393E46;
+    background-color: rgba(57, 62, 70, .5);
+}
+
+/* Adjust the size and styles of the SVG images as needed */
+.svg-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 5px;
+}
+.svg-icon-resource {
+    width: 28px;
+    height: 40px;
+}
+.svg-icons{
+    display: flex;
+}
+
+#scroll-container {
+    max-width: 1600px;
+    overflow-x: auto;
+}
+
+::-webkit-scrollbar {
+    width: 20px;
+}
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+}
+::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+}
+
+#fixed {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+}
