@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="../static/css/style2.css" th:href="@{/css/style2.css}">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
+
+    <script src="scripts.js" th:src="@{/js/scripts.js}" defer></script>
 </head>
 <body>
 
@@ -17,50 +19,44 @@
     <h1 id="title">catan-assistant</h1>
 </div>
 
-<div class="player" th:each="player: ${players}">
-    <div class="player-info">
+<div class="players">
+    <div class="player" th:each="player: ${players}">
         <div class="player-name" th:text="${player.getName()}"></div>
-        <div class="svg-icons">
-            <img class="svg-icon" th:src="@{/images/road.svg}" alt="road image">
-            <img class="svg-icon" th:src="@{/images/settlement.svg}" alt="settlement image">
-            <img class="svg-icon" th:src="@{/images/city.svg}" alt="city image">
+        <div class="combos-container">
+            <div class="svg-icons">
+                <img class="svg-icon" th:src="@{/images/road.svg}" alt="road image">
+                <img class="svg-icon" th:src="@{/images/settlement.svg}" alt="settlement image">
+                <img class="svg-icon" th:src="@{/images/city.svg}" alt="city image">
+            </div>
+            <div class="resource-table-container">
+                <table id="scroll-container" class="resource-table">
+                    <tr>
+                        <th>
+                            <img id="fixed" class="svg-icon-resource" src="../static/images/lumber.svg" th:src="@{/images/lumber.svg}" alt="lumber image">
+                        </th>
+                        <th>
+                            <img id="fixed" class="svg-icon-resource" src="../static/images/brick.svg" th:src="@{/images/brick.svg}" alt="brick image">
+                        </th>
+                        <th>
+                            <img id="fixed" class="svg-icon-resource" src="../static/images/wool.svg" th:src="@{/images/wool.svg}" alt="wool image">
+                        </th>
+                        <th>
+                            <img id="fixed" class="svg-icon-resource" src="../static/images/grain.svg" th:src="@{/images/grain.svg}" alt="grain image">
+                        </th>
+                        <th>
+                            <img id="fixed" class="svg-icon-resource" src="../static/images/ore.svg" th:src="@{/images/ore.svg}" alt="ore image">
+                        </th >
+                    </tr>
+                    <tr th:each="combo: ${player.getCardCombinations()}">
+                        <td th:text="${combo.getLumber()}"></td>
+                        <td th:text="${combo.getBrick()}"></td>
+                        <td th:text="${combo.getWool()}"></td>
+                        <td th:text="${combo.getGrain()}"></td>
+                        <td th:text="${combo.getOre()}"></td>
+                    </tr>
+                </table>
+            </div>
         </div>
-    </div>
-    <div class="resource-table-container">
-        <table id="scroll-container" class="resource-table">
-            <tbody>
-            <tr>
-                <td>
-                    <img id="fixed" class="svg-icon-resource" src="../static/images/lumber.svg" th:src="@{/images/lumber.svg}" alt="lumber image">
-                </td>
-                <td th:each="combo: ${player.getCardCombinations()}" th:text="${combo.getLumber()}"></td>
-            </tr>
-            <tr>
-                <td>
-                    <img id="fixed" class="svg-icon-resource" src="../static/images/brick.svg" th:src="@{/images/brick.svg}" alt="brick image">
-                </td>
-                <td th:each="combo: ${player.getCardCombinations()}" th:text="${combo.getBrick()}"></td>
-            </tr>
-            <tr>
-                <td>
-                    <img id="fixed" class="svg-icon-resource" src="../static/images/wool.svg" th:src="@{/images/wool.svg}" alt="wool image">
-                </td>
-                <td th:each="combo: ${player.getCardCombinations()}" th:text="${combo.getWool()}"></td>
-            </tr>
-            <tr>
-                <td>
-                    <img id="fixed" class="svg-icon-resource" src="../static/images/grain.svg" th:src="@{/images/grain.svg}" alt="grain image">
-                </td>
-                <td th:each="combo: ${player.getCardCombinations()}" th:text="${combo.getGrain()}"></td>
-            </tr>
-            <tr>
-                <td>
-                    <img id="fixed" class="svg-icon-resource" src="../static/images/ore.svg" th:src="@{/images/ore.svg}" alt="ore image">
-                </td>
-                <td th:each="combo: ${player.getCardCombinations()}" th:text="${combo.getOre()}"></td>
-            </tr>
-            </tbody>
-        </table>
     </div>
 </div>
 
