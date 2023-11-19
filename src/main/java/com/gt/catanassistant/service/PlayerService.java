@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+//TODO handle player initiating with no resources
+//Rettig0613 placed a settlement
+//UserRettig0613 placed a road
 @Service
 public class PlayerService
 {

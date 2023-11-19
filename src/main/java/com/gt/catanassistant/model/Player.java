@@ -74,6 +74,84 @@ public class Player {
         return id;
     }
 
+    public String canMakeRoad()
+    {
+        boolean can = false;
+        boolean cant = false;
+        for (CardCombination combination : cardCombinations)
+        {
+            if (combination.getLumber() > 0 && combination.getBrick() > 0)
+                can = true;
+            else
+                cant = true;
+            if (can && cant)
+                return "could";
+        }
+        return (can) ? "can" : "cant";
+    }
+
+    public String canMakeSettlement()
+    {
+        boolean can = false;
+        boolean cant = false;
+        for (CardCombination combination : cardCombinations)
+        {
+            if (combination.getLumber() > 0 &&
+                    combination.getBrick() > 0 &&
+                    combination.getGrain() > 0 &&
+                    combination.getWool() > 0)
+                can = true;
+            else
+                cant = true;
+            if (can && cant)
+                return "could";
+        }
+        return (can) ? "can" : "cant";
+    }
+
+    public String canMakeCity()
+    {
+        boolean can = false;
+        boolean cant = false;
+        for (CardCombination combination : cardCombinations)
+        {
+            if (combination.getGrain() >= 2 &&
+                    combination.getOre() >= 3)
+                can = true;
+            else
+                cant = true;
+            if (can && cant)
+                return "could";
+        }
+        return (can) ? "can" : "cant";
+    }
+
+    public String canBuyDevelopmentCard()
+    {
+        boolean can = false;
+        boolean cant = false;
+        for (CardCombination combination : cardCombinations)
+        {
+            if (combination.getWool() > 0 &&
+                    combination.getGrain() > 0 &&
+                    combination.getOre() > 0)
+                can = true;
+            else
+                cant = true;
+            if (can && cant)
+                return "could";
+        }
+        return (can) ? "can" : "cant";
+    }
+
+    public boolean mayHaveResource(String resource)
+    {
+        for (CardCombination combination : cardCombinations)
+            if (combination.getResource(resource) > 0)
+                return true;
+        return false;
+    }
+
     /*
 
     public boolean canMakeRoad()
