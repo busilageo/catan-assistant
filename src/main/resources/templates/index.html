@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
+
+    <!-- <script src="animations.js" defer></script> -->
+</head>
+<body>
+
+<form action="game" method="post" th:object="${game}">
+    <div>
+        <h1 id="title">catan-assistant</h1>
+    </div>
+
+    <div class="inputBox">
+        <input th:field="*{link}" id="linkBox" type="text" placeholder="Your link goes here...">
+        <a href="game.html" id="game-page-link">
+            <button id="linkBtn" class="goButton">
+                <span>Go</span>
+            </button>
+        </a>
+    </div>
+</form>
+
+<div class="instructions">
+    <h5>How to use?</h5>
+    <div class="instructions-container">
+        <p>1. Start a game on <a id="link" href="https://colonist.io/">colonist.io</a></p>
+        <p>2. Do NOT make any action!</p>
+        <p>3. Copy the link and paste it in the box above.</p>
+        <p>4. Hit "Go".</p>
+        <p>5. Wait until it loads and then you are free to play!</p>
+    </div>
+
+</div>
+</body>
+</html>
