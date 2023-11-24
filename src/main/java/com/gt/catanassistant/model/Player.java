@@ -1,7 +1,6 @@
 package com.gt.catanassistant.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gt.catanassistant.dao.PlayerDao;
 
 import java.util.*;
 

@@ -9,13 +9,18 @@ import sys
 import time
 import re
 
-# URL for post requests
-url = 'http://localhost:8080/api/players/action'
+
 
 # Open the colonist.io game
 page_to_scrape = webdriver.Chrome()
 game_code = sys.argv[1].split('/')[-1]
 page_to_scrape.get(f"https://colonist.io/{game_code}")
+
+# Get id of the game
+game_id = sys.argv[2]
+
+# URL for post requests
+url = f"http://localhost:8080/api/games/{game_id}/request"
 
 # Wait and press the "Accept cookies" button
 try:

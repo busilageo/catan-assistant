@@ -171,4 +171,15 @@ public class CardCombination {
         // Implement a custom hashCode method based on your requirements
         return Objects.hash(lumber, brick, wool, grain, ore);
     }
+
+    public static CardCombination stringToCardCombination(String string)
+    {
+        CardCombination cardCombination = new CardCombination();
+        String[] resources = string.split(" ");
+
+        for (String resource : resources)
+            cardCombination.incrementResource(resource);
+
+        return cardCombination;
+    }
 }
