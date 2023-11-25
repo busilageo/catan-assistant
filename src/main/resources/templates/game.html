@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="3">
+    <meta http-equiv="refresh" content="2">
     <title>Game</title>
 
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
@@ -17,6 +17,31 @@
 
 <div>
     <h1 id="title">catan-assistant</h1>
+</div>
+
+<div class="infoTab">
+    <div class="align-left">
+        <div class="game-status">
+            <div>Status:</div>
+            <div th:class="${status} + '-dot'"></div>
+            <div th:switch="${status}">
+                <div th:case="wait" th:text="Waiting..."></div>
+                <div th:case="live" th:text="Live"></div>
+                <div th:case="finished" th:text="Finished!"></div>
+                <div th:case="error" th:text="Technical Error!"></div>
+            </div>
+        </div>
+
+        <div th:if="${round >= 0}" class="round-selector">
+            <div th:text="'Round: ' + ${round}"></div>
+            <a th:href="@{${id}(round=(${round} - 1))}">
+                <button th:if="${round > 0}" class="prev-round">&lt;</button>
+            </a>
+            <a th:href="@{${id}(round=(${round} + 1))}">
+                <button th:if="${round < maxRounds}" class="next-round">&gt;</button>
+            </a>
+        </div>
+    </div>
 </div>
 
 <div class="players">

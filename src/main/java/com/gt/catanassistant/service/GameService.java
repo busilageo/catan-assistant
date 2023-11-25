@@ -70,8 +70,12 @@ public class GameService {
             cardCombinations.add(cardCombination);
             gameDao.getGameById(id).addPlayer(new Player(name, cardCombinations));
 
-        } else if (request.contains("rolled")) {
-            //TODO game started
+        } else if (request.contains("New Round") && gameDao.getGameById(id).getStatus().equals("live")) {
+            gameDao.getGameById(id).pushRound();
+
+        } else if (request.contains("rolled") && gameDao.getGameById(id).getStatus().equals("wait")) {
+            gameDao.getGameById(id).setStatus("live");
+            gameDao.getGameById(id).pushRound();
 
         } else if (request.contains("got")) {
             String name = request.split("got")[0].trim();
@@ -216,7 +220,7 @@ public class GameService {
 
         } else if (request.contains("trophy"))
         {
-            //TODO game ended
+            gameDao.getGameById(id).finish();
         }
     }
 }

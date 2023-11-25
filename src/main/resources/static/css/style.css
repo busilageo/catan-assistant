@@ -6,6 +6,7 @@ body{
     overflow-x: hidden;
     margin: 0;
     padding: 0;
+    max-width: 100%;
 }
 h1#title{
     color: #EEEEEE;
@@ -14,6 +15,7 @@ h1#title{
     font-family: Pacifico;
     font-weight: 100;
     text-decoration: underline 3px;
+    margin: 0%;
 }
 input#linkBox{
     border-top: 2px solid #144272;

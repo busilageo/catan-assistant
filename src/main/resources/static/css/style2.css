@@ -161,3 +161,134 @@
     border: 6px solid transparent;
     background-clip: content-box;
 }
+
+
+.infoTab {
+    display: flex;
+    flex-direction: column;
+    font-size: 25px;
+    font-weight: 500;
+    color: white;
+
+    width: 95%;
+}
+
+.game-status {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+}
+
+.live-dot {
+    background-color: red;
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    -o-border-radius: 100%;
+    -webkit-border-radius: 100%;
+}
+
+.finished-dot {
+    background-color: green;
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    -o-border-radius: 100%;
+    -webkit-border-radius: 100%;
+}
+
+.error-dot {
+    background-color: darkorchid;
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    -o-border-radius: 100%;
+    -webkit-border-radius: 100%;
+}
+
+.wait-dot {
+    background-color: gray;
+    width: 15px;
+    height: 15px;
+    margin: 5px;
+    border-radius: 100%;
+    -webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+    -ms-border-radius: 100%;
+    -o-border-radius: 100%;
+    -webkit-border-radius: 100%;
+}
+
+.round-selector {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.prev-round {
+    width: 20px;
+    height: 20px;
+    background-color: rgba(0, 0, 0, .4);
+    margin: 1px;
+    margin-left: 5px;
+    padding: 0%;
+    border: none;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+    border-radius: 20%;
+    -webkit-border-radius: 20%;
+    -moz-border-radius: 20%;
+    -ms-border-radius: 20%;
+    -o-border-radius: 20%;
+}
+.prev-round:hover {
+    background-color: rgba(0, 0, 0, .8);
+    cursor: pointer;
+}
+
+.next-round {
+    width: 20px;
+    height: 20px;
+
+    background-color: rgba(0, 0, 0, .4);
+    margin: 1px;
+    padding: 0%;
+    border: none;
+
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+
+    border-radius: 20%;
+    -webkit-border-radius: 20%;
+    -moz-border-radius: 20%;
+    -ms-border-radius: 20%;
+    -o-border-radius: 20%;
+}
+.next-round:hover {
+    background-color: rgba(0, 0, 0, .8);
+    cursor: pointer;
+}
+
+.align-left {
+    position: relative;
+    width: 180px;
+    border-bottom: solid 5px white;
+}

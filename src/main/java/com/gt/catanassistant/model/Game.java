@@ -13,24 +13,49 @@ public class Game {
     public UUID id;
     public String link;
     public List<Player> players;
+    public List<List<Player>> rounds;
+    public String status = "wait";
 
     public Game() {
         this.id = UUID.randomUUID();
         this.players = new ArrayList<>();
+        this.rounds = new ArrayList<>();
     }
 
     public Game(@JsonProperty("id") UUID id,
                 @JsonProperty("link") String link,
-                @JsonProperty("players") List<Player> players) {
+                @JsonProperty("players") List<Player> players,
+                @JsonProperty("rounds") List<List<Player>> rounds,
+                @JsonProperty("status") String status) {
         this.id = id;
         this.link = link;
         this.players = players;
+        this.rounds = rounds;
+        this.status = status;
     }
 
     public Game(UUID id, Game game) {
         this.id = id;
         this.link = game.getLink();
         this.players = game.getPlayers();
+        this.rounds = game.getRounds();
+        this.status = game.getStatus();
+    }
+
+    public List<List<Player>> getRounds() {
+        return rounds;
+    }
+
+    public void setRounds(List<List<Player>> rounds) {
+        this.rounds = rounds;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public UUID getId() {
@@ -75,6 +100,29 @@ public class Game {
                 .filter(player -> player.getName().equals(name))
                 .findFirst();
         return playerMaybe.orElse(null);
+    }
+
+    public void pushRound()
+    {
+        List<Player> roundPlayers = new ArrayList<>();
+        for (Player player : players)
+            roundPlayers.add(new Player(player.getId(), player));
+        rounds.add(roundPlayers);
+    }
+
+    public List<Player> getRound(int index)
+    {
+        return rounds.get(index);
+    }
+
+    public int getRoundsNr()
+    {
+        return rounds.size();
+    }
+
+    public void finish()
+    {
+        status = "finished";
     }
 
     @Override
