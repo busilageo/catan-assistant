@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="2">
+    <meta th:if="${round == maxRounds}" http-equiv="refresh" content="2">
     <title>Game</title>
 
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
@@ -37,7 +37,10 @@
             <a th:href="@{${id}(round=(${round} - 1))}">
                 <button th:if="${round > 0}" class="prev-round">&lt;</button>
             </a>
-            <a th:href="@{${id}(round=(${round} + 1))}">
+            <a th:if="${round + 1 < maxRounds}" th:href="@{${id}(round=(${round} + 1))}">
+                <button th:if="${round < maxRounds}" class="next-round">&gt;</button>
+            </a>
+            <a th:unless="${round + 1 < maxRounds}" th:href="@{${id}}">
                 <button th:if="${round < maxRounds}" class="next-round">&gt;</button>
             </a>
         </div>
