@@ -27,24 +27,12 @@ public class BasicController {
     }
 
     @GetMapping("/game/{id}")
-    public String game(@PathVariable("id")UUID id, Model model) {
-        model.addAttribute("players", gameService.getGameById(id).getPlayers());
-        model.addAttribute("round", gameService.getGameById(id).getRoundsNr() - 1);
-        model.addAttribute("prevRound", gameService.getGameById(id).getRoundsNr() - 2);
-        model.addAttribute("nextRound", gameService.getGameById(id).getRoundsNr());
-        model.addAttribute("maxRounds", gameService.getGameById(id).getRoundsNr() - 1);
-        model.addAttribute("status", gameService.getGameById(id).getStatus());
-        model.addAttribute("id", id);
-        return "game";
-    }
-
-    @GetMapping("/game/{id}?round={nr}")
-    public String game(@PathVariable("id")UUID id, @PathVariable("nr") int nr, Model model)
-    {
-        model.addAttribute("players", gameService.getGameById(id).getRound(nr));
-        model.addAttribute("round", nr);
-        model.addAttribute("prevRound", nr - 1);
-        model.addAttribute("nextRound", nr + 1);
+    public String game(@PathVariable("id")UUID id,
+                       @RequestParam(value = "round", required = false) Integer round,
+                       Model model) {
+        model.addAttribute("players", (round == null) ? gameService.getGameById(id).getPlayers() :
+                                                                    gameService.getGameById(id).getRound(round));
+        model.addAttribute("round", (round == null) ? gameService.getGameById(id).getRoundsNr() - 1 : round);
         model.addAttribute("maxRounds", gameService.getGameById(id).getRoundsNr() - 1);
         model.addAttribute("status", gameService.getGameById(id).getStatus());
         model.addAttribute("id", id);
