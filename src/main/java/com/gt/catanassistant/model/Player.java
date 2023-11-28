@@ -7,6 +7,7 @@ import java.util.*;
 public class Player {
     private final UUID id;
     private final String name;
+    private String color = "pink";
     private List<CardCombination> cardCombinations = new ArrayList<>();
 
     public Player(@JsonProperty("id") UUID id,
@@ -16,10 +17,20 @@ public class Player {
         this.name = name;
         this.cardCombinations = cardCombinations;
     }
+    public Player(@JsonProperty("id") UUID id,
+                  @JsonProperty("name") String name,
+                  @JsonProperty("color") String color,
+                  @JsonProperty("cardCombinations") List<CardCombination> cardCombinations) {
+        this.id = id;
+        this.name = name;
+        this.color = color;
+        this.cardCombinations = cardCombinations;
+    }
 
     public Player(@JsonProperty("id") UUID id, Player player) {
         this.id = id;
         this.name = player.getName();
+        this.color = player.getColor();
         this.cardCombinations = player.getCardCombinations();
     }
 
@@ -28,6 +39,18 @@ public class Player {
         this.id = UUID.randomUUID();
         this.name = name;
         this.cardCombinations = cardCombinations;
+    }
+
+    public Player(String name, String color, List<CardCombination> cardCombinations)
+    {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.color = color;
+        this.cardCombinations = cardCombinations;
+    }
+
+    public String getColor() {
+        return (color == null) ? "pink" : color;
     }
 
     public String getName() {

@@ -63,12 +63,18 @@ public class GameService {
 
     public void handleRequest(UUID id, String request)
     {
-        if (request.contains("received starting resources")) {
+        if (request.contains("placed a settlement")) {
+            System.out.println(request);
+            String name = request.split(" ")[0].trim();
+            String color = request.split("_")[1].split("\\.")[0].trim();
+            gameDao.getGameById(id).addColor(name, color);
+
+        } else if (request.contains("received starting resources")) {
             String name = request.split("received starting resources")[0].trim();
             CardCombination cardCombination = CardCombination.stringToCardCombination(request.split("received starting resources")[1].trim());
             List<CardCombination> cardCombinations = new ArrayList<>();
             cardCombinations.add(cardCombination);
-            gameDao.getGameById(id).addPlayer(new Player(name, cardCombinations));
+            gameDao.getGameById(id).addPlayer(new Player(name, gameDao.getGameById(id).getColorOfName(name), cardCombinations));
 
         } else if (request.contains("New Round") && gameDao.getGameById(id).getStatus().equals("live")) {
             gameDao.getGameById(id).pushRound();

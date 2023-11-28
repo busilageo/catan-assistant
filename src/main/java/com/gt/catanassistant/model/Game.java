@@ -4,16 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import java.security.PublicKey;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class Game {
     public UUID id;
     public String link;
     public List<Player> players;
     public List<List<Player>> rounds;
+    public Map<String, String> colors = new HashMap<>();
     public String status = "wait";
 
     public Game() {
@@ -34,12 +32,35 @@ public class Game {
         this.status = status;
     }
 
+    public Game(@JsonProperty("id") UUID id,
+                @JsonProperty("link") String link,
+                @JsonProperty("players") List<Player> players,
+                @JsonProperty("rounds") List<List<Player>> rounds,
+                @JsonProperty("colors") Map<String, String> colors,
+                @JsonProperty("status") String status) {
+        this.id = id;
+        this.link = link;
+        this.players = players;
+        this.rounds = rounds;
+        this.colors = colors;
+        this.status = status;
+    }
+
     public Game(UUID id, Game game) {
         this.id = id;
         this.link = game.getLink();
         this.players = game.getPlayers();
         this.rounds = game.getRounds();
+        this.colors = game.getColors();
         this.status = game.getStatus();
+    }
+
+    public Map<String, String> getColors() {
+        return colors;
+    }
+
+    public void setColors(Map<String, String> colors) {
+        this.colors = colors;
     }
 
     public List<List<Player>> getRounds() {
@@ -123,6 +144,16 @@ public class Game {
     public void finish()
     {
         status = "finished";
+    }
+
+    public void addColor(String name, String color)
+    {
+        colors.put(name, color);
+    }
+
+    public String getColorOfName(String name)
+    {
+        return colors.get(name);
     }
 
     @Override

@@ -49,7 +49,7 @@ def print_new_messages(html_messages):
         desired_span = soup.find('span', class_ = '')
         
         line = ""
-        
+
         for child in desired_span:
             if hasattr(child, 'name') and child.name == "img":
                 alt_text = child.get("alt")
@@ -59,6 +59,10 @@ def print_new_messages(html_messages):
                 text = child.text
                 if text:
                     line += text + " "
+            if hasattr(child, 'src') and ("placed a" in line):
+                img_src = child.get("src")
+                if img_src:
+                    line += img_src + " "
         
         line = re.sub(r'\s+', ' ', line)
         

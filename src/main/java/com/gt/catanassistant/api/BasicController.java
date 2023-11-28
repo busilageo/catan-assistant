@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.UUID;
 
+//TODO Get rid of reloading, make it dynamic
+//TODO Add wait for scraper
+//TODO Add games archive
+//TODO Add authentication
+//TODO Make security
 @Controller
 public class BasicController {
     private final GameService gameService;
@@ -44,6 +49,7 @@ public class BasicController {
         gameService.addGame(new Game(game.getId(), game));
 
         ProcessBuilder processBuilder = new ProcessBuilder("python", "src/main/python/scraper.py", game.getLink(), game.getId().toString());
+        processBuilder.redirectErrorStream(true);
         Process pythonProcess = processBuilder.start();
 
         return "redirect:/game/" + game.getId();
