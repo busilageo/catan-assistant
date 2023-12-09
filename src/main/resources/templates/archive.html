@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Archive</title>
+
+  <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+  <link rel="stylesheet" href="../static/css/archiveStyle.css" th:href="@{/css/archiveStyle.css}">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div>
+  <h1 id="title">catan-assistant</h1>
+</div>
+
+<div class="game-list">
+  <a th:each="game: ${games}" th:href="${'game/' + game.getId()}" class="invisible-link">
+    <div class="game">
+      <div class="game-uuid">
+        <span th:text="${'#' + game.getId()}"></span>
+      </div>
+      <div class="content">
+        <div class="info">
+          <div class="status" th:switch="${game.getStatus()}">
+            <div th:class="${game.getStatus() + '-dot'}"></div>
+            <div th:case="'wait'">Waiting...</div>
+            <div th:case="'live'">Live</div>
+            <div th:case="'finished'">Finished</div>
+            <div th:case="'error'">Technicality</div>
+          </div>
+          <div class="date">
+            <img th:src="@{/images/icons/calendar.svg}" alt="calendar-icon" class="icon">
+            <div>16-05-2019</div>
+          </div>
+          <div class="time">
+            <img th:src="@{/images/icons/time.svg}" alt="time-icon" class="icon">
+            <div>22:05 min</div>
+          </div>
+          <div class="round-nr">
+            <img th:src="@{/images/icons/double-arrow-right.svg}" alt="double-arrow-right" class="icon">
+            <div th:text="${game.getRoundsNr() + ' rounds'}"></div>
+          </div>
+        </div>
+        <div class="separation-line"></div>
+        <div class="players-container">
+          <div th:each="player: ${game.getPlayers()}" class="player-player">
+            <img th:src="@{'/images/buildings/' + ${player.getColor()} + '/settlement.svg'}" alt="settlement" class="settlement-img">
+            <span th:text="${player.getName()}"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </a>
+</div>
+
+</body>
+</html>

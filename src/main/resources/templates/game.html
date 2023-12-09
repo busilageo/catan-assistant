@@ -25,10 +25,10 @@
             <div>Status:</div>
             <div th:class="${status} + '-dot'"></div>
             <div th:switch="${status}">
-                <div th:case="wait" th:text="Waiting..."></div>
-                <div th:case="live" th:text="Live"></div>
-                <div th:case="finished" th:text="Finished!"></div>
-                <div th:case="error" th:text="Technical Error!"></div>
+                <div th:case="wait">Waiting...</div>
+                <div th:case="live">Live</div>
+                <div th:case="finished">Finished!</div>
+                <div th:case="error">Technicality!</div>
             </div>
         </div>
 

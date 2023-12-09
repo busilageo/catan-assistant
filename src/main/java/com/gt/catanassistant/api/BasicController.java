@@ -44,6 +44,13 @@ public class BasicController {
         return "game";
     }
 
+    @GetMapping("/archive")
+    public String archive(Model model)
+    {
+        model.addAttribute("games", gameService.getAllGames());
+        return "archive";
+    }
+
     @PostMapping("/createGame")
     public String createGame(@ModelAttribute Game game) throws IOException {
         gameService.addGame(new Game(game.getId(), game));
