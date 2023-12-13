@@ -7,12 +7,22 @@
 
   <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
   <link rel="stylesheet" href="../static/css/archiveStyle.css" th:href="@{/css/archiveStyle.css}">
+  <link rel="stylesheet" href="../static/css/barStyle.css" th:href="@{/css/barStyle.css}">
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
 </head>
 
 <body>
 
+<div class="top-bar-bg"></div>
+<div class="top-bar">
+  <a th:href="@{/}">
+    <img th:src="@{'/images/icons/search.svg'}" class="sb-icon" alt="search">
+  </a>
+  <a th:href="@{/archive}">
+    <img th:src="@{'/images/icons/archive.svg'}" class="sb-icon" alt="archive">
+  </a>
+</div>
 <div>
   <h1 id="title">catan-assistant</h1>
 </div>

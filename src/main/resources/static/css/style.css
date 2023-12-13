@@ -9,13 +9,14 @@ body{
     max-width: 100%;
 }
 h1#title{
-    color: #EEEEEE;
+    color: white;
     text-align: center;
     font-size: 50px;
     font-family: Pacifico;
     font-weight: 100;
     text-decoration: underline 3px;
-    margin: 0%;
+    margin: 0;
+    padding-bottom: 50px;
 }
 input#linkBox{
     border-top: 2px solid #144272;

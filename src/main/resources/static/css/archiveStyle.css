@@ -69,7 +69,7 @@
     text-decoration: none;
 }
 
-.live-dot {
+.finished-dot {
     background-color: red;
     width: 15px;
     height: 15px;

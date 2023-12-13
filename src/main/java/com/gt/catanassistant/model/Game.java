@@ -13,6 +13,7 @@ public class Game {
     public List<List<Player>> rounds;
     public Map<String, String> colors = new HashMap<>();
     public String status = "wait";
+    public boolean ready = false;
 
     public Game() {
         this.id = UUID.randomUUID();
@@ -53,6 +54,15 @@ public class Game {
         this.rounds = game.getRounds();
         this.colors = game.getColors();
         this.status = game.getStatus();
+        this.ready = game.isReady();
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 
     public Map<String, String> getColors() {

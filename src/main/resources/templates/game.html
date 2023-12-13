@@ -8,6 +8,7 @@
 
     <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
     <link rel="stylesheet" href="../static/css/style2.css" th:href="@{/css/style2.css}">
+    <link rel="stylesheet" href="../static/css/barStyle.css" th:href="@{/css/barStyle.css}">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
 
@@ -15,92 +16,106 @@
 </head>
 <body>
 
+<div class="top-bar-bg"></div>
+<div class="top-bar">
+    <a th:href="@{/}">
+        <img th:src="@{'/images/icons/search.svg'}" class="sb-icon" alt="search">
+    </a>
+    <a th:href="@{/archive}">
+        <img th:src="@{'/images/icons/archive.svg'}" class="sb-icon" alt="archive">
+    </a>
+</div>
 <div>
     <h1 id="title">catan-assistant</h1>
 </div>
 
-<div class="infoTab">
-    <div class="align-left">
-        <div class="game-status">
-            <div>Status:</div>
-            <div th:class="${status} + '-dot'"></div>
-            <div th:switch="${status}">
-                <div th:case="wait">Waiting...</div>
-                <div th:case="live">Live</div>
-                <div th:case="finished">Finished!</div>
-                <div th:case="error">Technicality!</div>
+<div th:unless="${isReady}" class="loading-text">
+    Loading...
+</div>
+<div th:if="${isReady}">
+    <div class="infoTab">
+        <div class="align-left">
+            <div class="game-status">
+                <div>Status:</div>
+                <div th:class="${status} + '-dot'"></div>
+                <div th:switch="${status}">
+                    <div th:case="wait">Waiting...</div>
+                    <div th:case="live">Live</div>
+                    <div th:case="finished">Finished!</div>
+                    <div th:case="error">Technicality!</div>
+                </div>
             </div>
-        </div>
 
-        <div th:if="${round >= 0}" class="round-selector">
-            <div th:text="'Round: ' + ${round}"></div>
-            <a th:href="@{${id}(round=(${round} - 1))}">
-                <button th:if="${round > 0}" class="prev-round">&lt;</button>
-            </a>
-            <a th:if="${round + 1 < maxRounds}" th:href="@{${id}(round=(${round} + 1))}">
-                <button th:if="${round < maxRounds}" class="next-round">&gt;</button>
-            </a>
-            <a th:unless="${round + 1 < maxRounds}" th:href="@{${id}}">
-                <button th:if="${round < maxRounds}" class="next-round">&gt;</button>
-            </a>
+            <div th:if="${round >= 0}" class="round-selector">
+                <div th:text="'Round: ' + ${round}"></div>
+                <a th:href="@{${id}(round=(${round} - 1))}">
+                    <button th:if="${round > 0}" class="prev-round">&lt;</button>
+                </a>
+                <a th:if="${round + 1 < maxRounds}" th:href="@{${id}(round=(${round} + 1))}">
+                    <button th:if="${round < maxRounds}" class="next-round">&gt;</button>
+                </a>
+                <a th:unless="${round + 1 < maxRounds}" th:href="@{${id}}">
+                    <button th:if="${round < maxRounds}" class="next-round">&gt;</button>
+                </a>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="players">
-    <div class="player" th:each="player: ${players}">
-        <div class="player-name" th:text="${player.getName()}"></div>
-        <div class="combos-container">
-            <div class="svg-icons">
-                <div class="icon-pattern">
-                    <img class="svg-icon" th:classappend="${player.canMakeRoad() == 'cant'}? 'cant'" th:src="@{'/images/buildings/' + ${player.getColor()} + '/road.svg'}" alt="road image">
-                    <div class="status" th:classappend="${player.canMakeRoad()}"></div>
+    <div class="players">
+        <div class="player" th:each="player: ${players}">
+            <div class="player-name" th:text="${player.getName()}"></div>
+            <div class="combos-container">
+                <div class="svg-icons">
+                    <div class="icon-pattern">
+                        <img class="svg-icon" th:classappend="${player.canMakeRoad() == 'cant'}? 'cant'" th:src="@{'/images/buildings/' + ${player.getColor()} + '/road.svg'}" alt="road image">
+                        <div class="status" th:classappend="${player.canMakeRoad()}"></div>
+                    </div>
+                    <div class="icon-pattern">
+                        <img class="svg-icon" th:classappend="${player.canMakeSettlement() == 'cant'}? 'cant'" th:src="@{'/images/buildings/' + ${player.getColor()} + '/settlement.svg'}" alt="settlement image">
+                        <div class="status" th:classappend="${player.canMakeSettlement()}"></div>
+                    </div>
+                    <div class="icon-pattern">
+                        <img class="svg-icon" th:classappend="${player.canMakeCity() == 'cant'}? 'cant'" th:src="@{'/images/buildings/' + ${player.getColor()} + '/city.svg'}" alt="city image">
+                        <div class="status" th:classappend="${player.canMakeCity()}"></div>
+                    </div>
+                    <div class="icon-pattern">
+                        <img class="svg-icon-development" th:classappend="${player.canBuyDevelopmentCard() == 'cant'}? 'cant'" th:src="@{/images/cards/development.svg}" alt="development image">
+                        <div class="status" th:classappend="${player.canBuyDevelopmentCard()}"></div>
+                    </div>
                 </div>
-                <div class="icon-pattern">
-                    <img class="svg-icon" th:classappend="${player.canMakeSettlement() == 'cant'}? 'cant'" th:src="@{'/images/buildings/' + ${player.getColor()} + '/settlement.svg'}" alt="settlement image">
-                    <div class="status" th:classappend="${player.canMakeSettlement()}"></div>
+                <div class="resource-table-container">
+                    <table id="scroll-container" class="resource-table">
+                        <tr>
+                            <th>
+                                <img id="fixed" class="svg-icon-resource" th:classappend="${!player.mayHaveResource('lumber')}? 'cant'"
+                                     th:src="@{/images/res/lumber.svg}" alt="lumber image">
+                            </th>
+                            <th>
+                                <img id="fixed" class="svg-icon-resource" th:classappend="${!player.mayHaveResource('brick')}? 'cant'"
+                                     th:src="@{/images/res/brick.svg}" alt="brick image">
+                            </th>
+                            <th>
+                                <img id="fixed" class="svg-icon-resource" th:classappend="${!player.mayHaveResource('wool')}? 'cant'"
+                                     th:src="@{/images/res/wool.svg}" alt="wool image">
+                            </th>
+                            <th>
+                                <img id="fixed" class="svg-icon-resource" th:classappend="${!player.mayHaveResource('grain')}? 'cant'"
+                                     th:src="@{/images/res/grain.svg}" alt="grain image">
+                            </th>
+                            <th>
+                                <img id="fixed" class="svg-icon-resource" th:classappend="${!player.mayHaveResource('ore')}? 'cant'"
+                                     th:src="@{/images/res/ore.svg}" alt="ore image">
+                            </th >
+                        </tr>
+                        <tr th:each="combo: ${player.getCardCombinations()}">
+                            <td th:text="${combo.getLumber()}"></td>
+                            <td th:text="${combo.getBrick()}"></td>
+                            <td th:text="${combo.getWool()}"></td>
+                            <td th:text="${combo.getGrain()}"></td>
+                            <td th:text="${combo.getOre()}"></td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="icon-pattern">
-                    <img class="svg-icon" th:classappend="${player.canMakeCity() == 'cant'}? 'cant'" th:src="@{'/images/buildings/' + ${player.getColor()} + '/city.svg'}" alt="city image">
-                    <div class="status" th:classappend="${player.canMakeCity()}"></div>
-                </div>
-                <div class="icon-pattern">
-                    <img class="svg-icon-development" th:classappend="${player.canBuyDevelopmentCard() == 'cant'}? 'cant'" th:src="@{/images/cards/development.svg}" alt="development image">
-                    <div class="status" th:classappend="${player.canBuyDevelopmentCard()}"></div>
-                </div>
-            </div>
-            <div class="resource-table-container">
-                <table id="scroll-container" class="resource-table">
-                    <tr>
-                        <th>
-                            <img id="fixed" class="svg-icon-resource" th:classappend="${!player.mayHaveResource('lumber')}? 'cant'"
-                                 th:src="@{/images/res/lumber.svg}" alt="lumber image">
-                        </th>
-                        <th>
-                            <img id="fixed" class="svg-icon-resource" th:classappend="${!player.mayHaveResource('brick')}? 'cant'"
-                                 th:src="@{/images/res/brick.svg}" alt="brick image">
-                        </th>
-                        <th>
-                            <img id="fixed" class="svg-icon-resource" th:classappend="${!player.mayHaveResource('wool')}? 'cant'"
-                                 th:src="@{/images/res/wool.svg}" alt="wool image">
-                        </th>
-                        <th>
-                            <img id="fixed" class="svg-icon-resource" th:classappend="${!player.mayHaveResource('grain')}? 'cant'"
-                                 th:src="@{/images/res/grain.svg}" alt="grain image">
-                        </th>
-                        <th>
-                            <img id="fixed" class="svg-icon-resource" th:classappend="${!player.mayHaveResource('ore')}? 'cant'"
-                                 th:src="@{/images/res/ore.svg}" alt="ore image">
-                        </th >
-                    </tr>
-                    <tr th:each="combo: ${player.getCardCombinations()}">
-                        <td th:text="${combo.getLumber()}"></td>
-                        <td th:text="${combo.getBrick()}"></td>
-                        <td th:text="${combo.getWool()}"></td>
-                        <td th:text="${combo.getGrain()}"></td>
-                        <td th:text="${combo.getOre()}"></td>
-                    </tr>
-                </table>
             </div>
         </div>
     </div>

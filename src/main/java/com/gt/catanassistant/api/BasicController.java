@@ -11,10 +11,10 @@ import java.io.IOException;
 import java.util.UUID;
 
 //TODO Get rid of reloading, make it dynamic
-//TODO Add wait for scraper
-//TODO Add games archive
-//TODO Add authentication
 //TODO Make security
+//TODO Add JPA DB                          main branch, in parallel
+//TODO Add local JPA                       BRANCH GT
+//TODO Add game comments (anonymously)     BRANCH GT
 @Controller
 public class BasicController {
     private final GameService gameService;
@@ -41,6 +41,7 @@ public class BasicController {
         model.addAttribute("maxRounds", gameService.getGameById(id).getRoundsNr() - 1);
         model.addAttribute("status", gameService.getGameById(id).getStatus());
         model.addAttribute("id", id);
+        model.addAttribute("isReady", gameService.getGameById(id).isReady());
         return "game";
     }
 

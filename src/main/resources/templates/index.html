@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
 
-    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/barStyle.css}">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
 
@@ -13,11 +14,20 @@
 </head>
 <body>
 
-<form action="/createGame" method="post" th:object="${game}">
-    <div>
-        <h1 id="title">catan-assistant</h1>
-    </div>
+<div class="top-bar-bg"></div>
+<div class="top-bar">
+    <a th:href="@{/}">
+        <img th:src="@{'/images/icons/search.svg'}" class="sb-icon" alt="search">
+    </a>
+    <a th:href="@{archive}">
+        <img th:src="@{'/images/icons/archive.svg'}" class="sb-icon" alt="archive">
+    </a>
+</div>
+<div>
+    <h1 id="title">catan-assistant</h1>
+</div>
 
+<form action="/createGame" method="post" th:object="${game}">
     <div class="inputBox">
         <input th:field="*{link}" id="linkBox" type="text" placeholder="Your link goes here...">
         <a href="game.html" id="game-page-link">

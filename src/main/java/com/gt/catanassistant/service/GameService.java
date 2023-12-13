@@ -63,7 +63,10 @@ public class GameService {
 
     public void handleRequest(UUID id, String request)
     {
-        if (request.contains("placed a settlement")) {
+        if (request.contains("Ready!")) {
+            gameDao.getGameById(id).setReady(true);
+
+        } else if (request.contains("placed a settlement")) {
             System.out.println(request);
             String name = request.split(" ")[0].trim();
             String color = request.split("_")[1].split("\\.")[0].trim();

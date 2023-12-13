@@ -39,6 +39,9 @@ except Exception as e:
     print("Error First Loading: ", str(e))
     sys.stdout.flush()
 
+# Announce that scraper is ready
+requests.post(url=url, data="Ready!")
+
 # Converts and prints/sends the chat messages
 def print_new_messages(html_messages):
     ok = ""
