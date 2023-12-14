@@ -93,6 +93,9 @@ def has_chat_updated(driver, previous_message_count):
     current_message_count = len(page_to_scrape.find_elements(By.CLASS_NAME, "message-post"))
     return current_message_count > previous_message_count
 
+start_time = time.time()
+waiting = False
+
 # Main loop
 while True:
     # Check if page has lost connection and refresh it
@@ -103,17 +106,28 @@ while True:
         sys.stdout.flush()
     except:
         pass
-    
+
     # Gets only the new messages
     def check_for_updates():
         current_messages = page_to_scrape.find_elements(By.CLASS_NAME, "message-post")
         new_messages = [message for message in current_messages if message not in prev_messages]
         return new_messages
     new_messages = check_for_updates()
-    
+
     # Update the previous messages to include the new ones
     for message in new_messages:
         prev_messages.add(message)
+
+    # Initializing elapsed time from last message
+    if (len(new_messages) == 0 and not waiting):
+        waiting = True
+        start_time = time.time()
+    elif (len(new_messages) > 0):
+        waiting = False
+
+    # If time elapsed from last message/action is longer than 10 minutes, exit
+    if (waiting and time.time() - start_time >= 600):
+        break
     
     # Print new messages
     if new_messages:
