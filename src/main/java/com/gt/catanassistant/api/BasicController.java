@@ -40,6 +40,7 @@ public class BasicController {
         return "index";
     }
 
+
     @GetMapping("/game/{id}")
     public String game(@PathVariable("id")UUID id,
                        @RequestParam(value = "round", required = false) Integer round,

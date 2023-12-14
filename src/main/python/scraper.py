@@ -138,4 +138,5 @@ while True:
     # A delay just to be safe, in case messages are getting spammed
     time.sleep(2)
 
+
 page_to_scrape.quit()
