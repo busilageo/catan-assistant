@@ -1,50 +1,26 @@
 package com.gt.catanassistant.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import org.springframework.web.bind.annotation.PutMapping;
-
-import java.security.PublicKey;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 public class Game {
-    public UUID id;
-    public String link;
-    public List<Player> players;
-    public List<List<Player>> rounds;
-    public Map<String, String> colors = new HashMap<>();
-    public String status = "wait";
-    public boolean ready = false;
+    private UUID id;
+    private String link;
+    private List<Player> players = new ArrayList<>();
+    private List<List<Player>> rounds = new ArrayList<>();
+    private Map<String, String> colors = new HashMap<>();
+    private String status = "wait";
+    private boolean ready = false;
+    private LocalDate date;
+    private LocalTime startTime;
+    private LocalTime endTime;
 
     public Game() {
         this.id = UUID.randomUUID();
-        this.players = new ArrayList<>();
-        this.rounds = new ArrayList<>();
-    }
-
-    public Game(@JsonProperty("id") UUID id,
-                @JsonProperty("link") String link,
-                @JsonProperty("players") List<Player> players,
-                @JsonProperty("rounds") List<List<Player>> rounds,
-                @JsonProperty("status") String status) {
-        this.id = id;
-        this.link = link;
-        this.players = players;
-        this.rounds = rounds;
-        this.status = status;
-    }
-
-    public Game(@JsonProperty("id") UUID id,
-                @JsonProperty("link") String link,
-                @JsonProperty("players") List<Player> players,
-                @JsonProperty("rounds") List<List<Player>> rounds,
-                @JsonProperty("colors") Map<String, String> colors,
-                @JsonProperty("status") String status) {
-        this.id = id;
-        this.link = link;
-        this.players = players;
-        this.rounds = rounds;
-        this.colors = colors;
-        this.status = status;
+        date = LocalDate.now();
+        startTime = LocalTime.now();
     }
 
     public Game(UUID id, Game game) {
@@ -55,6 +31,33 @@ public class Game {
         this.colors = game.getColors();
         this.status = game.getStatus();
         this.ready = game.isReady();
+        this.date = game.getDate();
+        this.startTime = game.getStartTime();
+        this.endTime = game.getEndTime();
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public boolean isReady() {
@@ -133,6 +136,27 @@ public class Game {
         return playerMaybe.orElse(null);
     }
 
+    public String getDuration()
+    {
+        LocalTime time2 = (status.equals("live") || status.equals("wait")) ? LocalTime.now() : this.endTime;
+        Duration duration = Duration.between(time2, this.startTime);
+        String durationString = "";
+        if (duration.toHours() > 0)
+        {
+            if (duration.toHours() < 10)
+                durationString += 0;
+            durationString = String.valueOf(Math.abs(duration.toHours())) + ':';
+        }
+        if (Math.abs(duration.toMinutes()) % 60 < 10)
+            durationString += 0;
+        durationString += String.valueOf(Math.abs(duration.toMinutes()) % 60) + ':';
+        if (Math.abs(duration.toSeconds()) % 60 < 10)
+            durationString += 0;
+        durationString += String.valueOf(Math.abs(duration.toSeconds()) % 60);
+
+        return durationString;
+    }
+
     public void pushRound()
     {
         List<Player> roundPlayers = new ArrayList<>();
@@ -154,6 +178,7 @@ public class Game {
     public void finish()
     {
         status = "finished";
+        endTime = LocalTime.now();
     }
 
     public void addColor(String name, String color)

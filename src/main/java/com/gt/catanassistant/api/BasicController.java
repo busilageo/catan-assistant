@@ -45,13 +45,15 @@ public class BasicController {
     public String game(@PathVariable("id")UUID id,
                        @RequestParam(value = "round", required = false) Integer round,
                        Model model) {
-        model.addAttribute("players", (round == null) ? gameService.getGameById(id).getPlayers() :
-                                                                    gameService.getGameById(id).getRound(round));
-        model.addAttribute("round", (round == null) ? gameService.getGameById(id).getRoundsNr() - 1 : round);
-        model.addAttribute("maxRounds", gameService.getGameById(id).getRoundsNr() - 1);
-        model.addAttribute("status", gameService.getGameById(id).getStatus());
+        Game game = gameService.getGameById(id);
+
+        model.addAttribute("players", (round == null) ? game.getPlayers() :
+                                                                    game.getRound(round));
+        model.addAttribute("round", (round == null) ? game.getRoundsNr() - 1 : round);
+        model.addAttribute("maxRounds", game.getRoundsNr() - 1);
+        model.addAttribute("status", game.getStatus());
         model.addAttribute("id", id);
-        model.addAttribute("isReady", gameService.getGameById(id).isReady());
+        model.addAttribute("isReady", game.isReady());
         return "game";
     }
 

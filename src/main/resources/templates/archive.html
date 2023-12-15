@@ -44,11 +44,11 @@
           </div>
           <div class="date">
             <img th:src="@{/images/icons/calendar.svg}" alt="calendar-icon" class="icon">
-            <div>16-05-2019</div>
+            <div th:text="${game.getDate()}"></div>
           </div>
           <div class="time">
             <img th:src="@{/images/icons/time.svg}" alt="time-icon" class="icon">
-            <div>22:05 min</div>
+            <div th:text="${game.getDuration()}"></div>
           </div>
           <div class="round-nr">
             <img th:src="@{/images/icons/double-arrow-right.svg}" alt="double-arrow-right" class="icon">

@@ -1,7 +1,6 @@
 package com.gt.catanassistant.dao;
 
 import com.gt.catanassistant.model.Game;
-import com.gt.catanassistant.model.Player;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
