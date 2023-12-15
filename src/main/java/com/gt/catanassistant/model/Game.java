@@ -1,12 +1,17 @@
 package com.gt.catanassistant.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import java.security.PublicKey;
 import java.util.*;
 
+@Entity
 public class Game {
+    @Id
     public UUID id;
     public String link;
     public List<Player> players;

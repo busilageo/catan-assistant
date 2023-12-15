@@ -4,7 +4,7 @@ import com.gt.catanassistant.dao.GameDao;
 import com.gt.catanassistant.model.CardCombination;
 import com.gt.catanassistant.model.Game;
 import com.gt.catanassistant.model.Player;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,17 +15,23 @@ import java.util.UUID;
 public class GameService {
     private final GameDao gameDao;
 
-    public GameService(@Qualifier("fakeGameDao") GameDao gameDao)
+    @Autowired
+    public GameService(GameDao gameDao)
     {
         this.gameDao = gameDao;
     }
 
     public void addGame(Game game) {
-        gameDao.addGame(game.getId(), game);
+        gameDao.save(game);
     }
-    public List<Game> getAllGames() { return gameDao.getAllGames(); }
-    public Game getGameById(UUID id) { return  gameDao.getGameById(id); }
-    public void deleteGameById(UUID id) { gameDao.deleteGameById(id); }
+    public Game getGameById(UUID id) { return  gameDao.findById(id).orElse(null); }
+    public List<Game> getAllGames() {
+        List<Game> games = new ArrayList<>();
+        gameDao.findAll().forEach(games::add);
+        return games;
+    }
+    public void updateGame(Game game) { gameDao.save(game);}
+    public void deleteGameById(UUID id) { gameDao.deleteById(id); }
 
     public void steal(Player player1, Player player2)
     {
@@ -63,33 +69,35 @@ public class GameService {
 
     public void handleRequest(UUID id, String request)
     {
+        Game game = getGameById(id);
+
         if (request.contains("Ready!")) {
-            gameDao.getGameById(id).setReady(true);
+            game.setReady(true);
 
         } else if (request.contains("placed a settlement")) {
             System.out.println(request);
             String name = request.split(" ")[0].trim();
             String color = request.split("_")[1].split("\\.")[0].trim();
-            gameDao.getGameById(id).addColor(name, color);
+            game.addColor(name, color);
 
         } else if (request.contains("received starting resources")) {
             String name = request.split("received starting resources")[0].trim();
             CardCombination cardCombination = CardCombination.stringToCardCombination(request.split("received starting resources")[1].trim());
             List<CardCombination> cardCombinations = new ArrayList<>();
             cardCombinations.add(cardCombination);
-            gameDao.getGameById(id).addPlayer(new Player(name, gameDao.getGameById(id).getColorOfName(name), cardCombinations));
+            game.addPlayer(new Player(name, game.getColorOfName(name), cardCombinations));
 
-        } else if (request.contains("New Round") && gameDao.getGameById(id).getStatus().equals("live")) {
-            gameDao.getGameById(id).pushRound();
+        } else if (request.contains("New Round") && game.getStatus().equals("live")) {
+            game.pushRound();
 
-        } else if (request.contains("rolled") && gameDao.getGameById(id).getStatus().equals("wait")) {
-            gameDao.getGameById(id).setStatus("live");
-            gameDao.getGameById(id).pushRound();
+        } else if (request.contains("rolled") && game.getStatus().equals("wait")) {
+            game.setStatus("live");
+            game.pushRound();
 
         } else if (request.contains("got")) {
             String name = request.split("got")[0].trim();
             CardCombination cardCombinationToAdd = CardCombination.stringToCardCombination(request.split("got")[1].trim());
-            Player player = gameDao.getGameById(id).getPlayerByName(name);
+            Player player = game.getPlayerByName(name);
             List<CardCombination> cardCombinations = player.getCardCombinations();
             for (CardCombination cardCombination : cardCombinations)
                 cardCombination.add(cardCombinationToAdd);
@@ -97,7 +105,7 @@ public class GameService {
         } else if (request.contains("discarded")) {
             String name = request.split("discarded")[0].trim();
             CardCombination cardCombinationToAdd = CardCombination.stringToCardCombination(request.split("discarded")[1].trim());
-            Player player = gameDao.getGameById(id).getPlayerByName(name);
+            Player player = game.getPlayerByName(name);
             List<CardCombination> cardCombinations = player.getCardCombinations();
             for (CardCombination cardCombination : cardCombinations)
                 cardCombination.subtract(cardCombinationToAdd);
@@ -108,8 +116,8 @@ public class GameService {
             String player1Name = request.split("stole card from")[0].trim();
             String player2Name = request.split("stole card from")[1].trim();
 
-            Player player1 = gameDao.getGameById(id).getPlayerByName(player1Name);
-            Player player2 = gameDao.getGameById(id).getPlayerByName(player2Name);
+            Player player1 = game.getPlayerByName(player1Name);
+            Player player2 = game.getPlayerByName(player2Name);
 
             steal(player1, player2);
 
@@ -119,8 +127,8 @@ public class GameService {
             String player1Trade = request.split("traded")[1].split("for")[0].trim();
             String player2Name = request.split("with")[1].trim();
             String player2Trade = request.split("for")[1].split("with")[0].trim();
-            Player player1 = gameDao.getGameById(id).getPlayerByName(player1Name);
-            Player player2 = gameDao.getGameById(id).getPlayerByName(player2Name);
+            Player player1 = game.getPlayerByName(player1Name);
+            Player player2 = game.getPlayerByName(player2Name);
 
             for (CardCombination combination : player1.getCardCombinations())
             {
@@ -140,7 +148,7 @@ public class GameService {
             String name = request.split("gave bank")[0].trim();
             String gave = request.split("gave bank")[1].split("and took")[0].trim();
             String took = request.split("and took")[1].trim();
-            Player player = gameDao.getGameById(id).getPlayerByName(name);
+            Player player = game.getPlayerByName(name);
 
             for (CardCombination cardCombination : player.getCardCombinations())
             {
@@ -152,7 +160,7 @@ public class GameService {
         } else if (request.contains("built"))
         {
             String name = request.split("built")[0].trim();
-            Player player = gameDao.getGameById(id).getPlayerByName(name);
+            Player player = game.getPlayerByName(name);
 
             for (CardCombination cardCombination : player.getCardCombinations())
             {
@@ -184,7 +192,7 @@ public class GameService {
         } else if (request.contains("bought development card"))
         {
             String name = request.split("bought")[0].trim();
-            Player player = gameDao.getGameById(id).getPlayerByName(name);
+            Player player = game.getPlayerByName(name);
 
             for (CardCombination cardCombination : player.getCardCombinations())
             {
@@ -201,7 +209,7 @@ public class GameService {
         {
             String name = request.split("took")[0].trim();
             String took = request.split("bank")[1].trim();
-            Player player = gameDao.getGameById(id).getPlayerByName(name);
+            Player player = game.getPlayerByName(name);
 
             for (CardCombination cardCombination : player.getCardCombinations())
                 cardCombination.add(CardCombination.stringToCardCombination(took));
@@ -211,7 +219,7 @@ public class GameService {
             String name = request.split("stole")[0].trim();
             int amount = Integer.parseInt(request.split("stole")[1].trim().split(" ")[0]);
             String resource = request.split(" ")[3].trim();
-            Player player = gameDao.getGameById(id).getPlayerByName(name);
+            Player player = game.getPlayerByName(name);
 
             for (CardCombination cardCombination : player.getCardCombinations())
             {
@@ -219,7 +227,7 @@ public class GameService {
                     cardCombination.incrementResource(resource);
             }
 
-            for (Player playerFromList : gameDao.getGameById(id).getPlayers())
+            for (Player playerFromList : game.getPlayers())
                 if (!playerFromList.equals(player))
                 {
                     for (CardCombination cardCombination : playerFromList.getCardCombinations())
@@ -229,7 +237,9 @@ public class GameService {
 
         } else if (request.contains("trophy"))
         {
-            gameDao.getGameById(id).finish();
+            game.finish();
         }
+
+        updateGame(game);
     }
 }
